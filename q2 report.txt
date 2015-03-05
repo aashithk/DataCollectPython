@@ -1,0 +1,19 @@
+2) Write a script that extracts all tweets containing any of the hashtags in your slot, and are posted in the specified timeframe (Note that the times are all written in Pacific Standard Time). Store all tweets in a file named tweets.txt in the same format as the file in part 1. Note that the maximum number of results the API can return for a search is 500 (which you have to manually set it to do). Therefore, to cover all tweets in the entire timeframe, you should make several queries to the API for small time windows, possibly as short as a few seconds, that contain less tweets posted in them than this maximum number of results. If a query returns the maximum number of results, you should divide the query time window and run them again so that each query returns less number of results than the maximum limit. Remember to also have the parameter field include_metrics=1 in your query, as you will need the metrics for next parts.
+Store a log of all your searches in a file named search_log.txt in the following format for a query in each line:
+[query_string] From: [start_date] To: [end_date] No. of Results:[results_number]
+For example:
+#SuperBowl From: 2015-01-31 15:45:30 To: 2015-01-31 15:45:35 No. Of Results: 167
+#SuperBowl From: 2015-01-31 15:45:35 To: 2015-01-31 15:45:45 No. Of Results: 135
+#superbowlads From: 2015-01-31 15:45:35 To: 2015-01-31 15:45:45 No. Of Results: 135
+
+
+For this question, we need to use a script that queries the topsy API repeatedly to get the entire set of tweets in the given time frame of one hour. We repeat this process for all the five given hashtags. However, the aforementioned API can only return a maximum of 500 tweets for a set time frame. Thus, to get the entire set of tweets for a given time frame, we approach the problem recursively. We first proceed to check the number of tweets for the entire time frame given. If the number of tweets returned is =500, we then recursively solve the problem for smaller segments of the time frame(Half in this case) until the number of tweets returned by the API is lesser than 500. This approach ensures that every single tweet is collected in the given time frame even for extremely high rate of tweets at any given instant. The result is stored in tweets.txt. During this process, we also log information about the queries as mentioned in the question in search_log.txt.
+The hashtags with their tweet counts are as follows:
+#brandbowl - 4651
+#SB49 - 91932
+#football - 2084
+#MakeSafeHappen - 2394
+#adbowl - 0
+Thus #SB49 seems to be the most popular tag for the given time period.
+We also note from the result that the approach used ensures we do not waste too many queries. For instance, the final hashtag #adbowl has 0 tweets in the given period this is solved in 1 single query.
+
